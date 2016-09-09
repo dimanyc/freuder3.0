@@ -18,3 +18,6 @@
 
 # Ignore .dotfiles
 .env
+
+# SimpleCov
+coverage
