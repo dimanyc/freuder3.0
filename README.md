@@ -1,23 +1,24 @@
-# Rails_Template
-Barebone Rails 4 template with:
+# README
 
-### DB:
-Postgres database
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-### Test Suite:
- * RSpec 3.5
- * Capybara
- * FactoryGirl
- * DatabaseCleaner
- * Faker
- * Shoulda's
- * WhineyValidations _throws validation erros in test.log_
- * SimpleCov
+Things you may want to cover:
 
-### Development:
- * DotENV
- * Pry
- * Hirb
+* Ruby version
 
-## Renaming:
-Run `rails g rename:app_to New-Name` in order to rename the app
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
