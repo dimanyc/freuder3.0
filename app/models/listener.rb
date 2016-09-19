@@ -1,5 +1,3 @@
-require_relative '../serializers/hash_serializer'
-
 class Listener < ApplicationRecord
 
   validates_presence_of :name
@@ -8,7 +6,8 @@ class Listener < ApplicationRecord
   has_many :listener_tweets
   has_many :tweets, through: :listener_tweets
 
-  serialize [:search_terms, :options], HashSerializer
+  # serialize [:search_terms, :options], JSON
+  # serialize :options, HashSerializer
 
   store_accessor :search_terms,
     :keywords,
@@ -16,38 +15,46 @@ class Listener < ApplicationRecord
     :key_hashtags
 
   store_accessor :options,
-    :case_sensitive?,
-    :hashtags?,
-    :mentions?,
-    :use_keywords_everywhere? # use [keywords] for searching  #hashtags and @mentions?
+    :case_sensitive,
+    :hashtags,
+    :mentions,
+    :use_keywords_everywhere # use [keywords] for searching  #hashtags and @mentions?
 
-  def analyze(tweet)
-    listener_tweet = ListenerTweet.new(tweet_id: tweet.id, listener_id: id)
-    look_for_matching_hashtags(tweet, listener_tweet) if hashtags?
-    look_for_matching_mentions(tweet, listener_tweet) if mentions?
-    look_for_matching_keywords(tweet, listener_tweet)
-    listener_tweet.save! if listener_tweet.changed?
+  keys = ['hashtags','case_sensitive','mentions','use_keywords_everywhere']
+  keys.each do |key|
+    define_method("#{key}?") do
+      send(key) == true
+    end
+  end
+
+  def parse(tweet)
+    @tweet = tweet
+    @listener_tweet = ListenerTweet.new(tweet_id: tweet.id, listener_id: id)
+    parse_hashtags if hashtags?
+    parse_mentions if mentions?
+    parse_keywords unless keywords.empty?
+    @listener_tweet.save! if @listener_tweet.attribute_changed?(:slips)
   end
 
   private
 
-  def look_for_matching_hashtags(tweet, listener_tweet)
-    hashtags = tweet.scan(/\#(\w+)/).flatten
-    return if hashtags.nil? || (hashtags & key_hashtags).count == 0
-    listener_tweet.hashtag_slips.push(hashtags & key_hashtags)
+  def parse_hashtags
+    matching_hashtags = @tweet.hashtags & key_hashtags
+    return if matching_hashtags.empty?
+    @listener_tweet.hashtag_slips.push(matching_hashtags).flatten!
   end
 
-  def look_for_matching_mentions(tweet, listener_tweet)
-    mentions = tweet.scan(/\@(\w+)/).flatten
-    return if mentions.nil? || (mentions & key_mentions).count == 0
-    listener_tweet.mention_slips.push(mentions & key_mentions)
+  def parse_mentions
+    matching_mentions = @tweet.mentions & key_mentions
+    return if matching_mentions.empty?
+    @listener_tweet.mention_slips.push(matching_mentions).flatten!
   end
 
-  def look_for_matching_keywords(tweet, listener_tweet)
-    tweet_keywords   = handle_keyword_search_option(tweet)
+  def parse_keywords
+    tweet_keywords   = handle_keyword_search_option(@tweet)
     matched_keywords = handle_case_sensitive_keyword_search(tweet_keywords)
-    return if tweet_keywords.nil? || matched_keywords.empty?
-    listener_tweet.keyword_slips = matched_keywords
+    return if matched_keywords.empty?
+    @listener_tweet.keyword_slips = matched_keywords
   end
 
   def handle_case_sensitive_keyword_search(tweet_keywords)
@@ -60,12 +67,9 @@ class Listener < ApplicationRecord
 
   def handle_keyword_search_option(tweet)
     if use_keywords_everywhere?
-      tweet.body.scan(/\w/).flatten
+      tweet.body.gsub(/[@#]/,'').split(' ').map(&:strip)
     else
-      tweet.body.gsub(/([@#])([a-z\d_]+)/, '')
-        .gsub(/\W/, ' ')
-        .gsub(/\s+/, ' ')
-        .split(' ')
+      tweet.body.scan(/\w+/)
     end
   end
 

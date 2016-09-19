@@ -1,5 +1,3 @@
-require_relative '../serializers/hash_serializer'
-
 class ListenerTweet < ApplicationRecord
 
   validates_presence_of :listener_id, :tweet_id

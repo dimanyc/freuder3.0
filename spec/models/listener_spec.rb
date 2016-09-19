@@ -14,32 +14,114 @@ RSpec.describe Listener, type: :model do
     ActiveRecord::RecordInvalid,
     'Validation failed: Search terms \'keywords\' cannot be empty')
   end
+  context 'parsing' do
 
-  context 'searching for case-sensitive keywords' do
+    context 'happy path:' do
 
-    before(:all) do
-      @listener  = create(:listener, keywords: ['Foo'])
-      @tweet = create(:tweet, body: 'Foo #bar #baz @fizz,bizz')
-    end
+      before(:each) do
+        @listener = create(
+          :listener,
+          keywords:     ['foo'],
+          key_mentions: ['@dimanyc'],
+          key_hashtags: ['#reactjs'],
+          hashtags:     true,
+          mentions:     true
+        )
+        @tweet = create(
+          :tweet,
+          body:         'foo Bar fizz @abc',
+          mentions:     ['@dimanyc'],
+          hashtags:     ['#reactjs']
+        )
+      end
 
-    it 'should store matched tweets' do
-      @listener.analyze(@tweet)
-      expect(@listener.tweets).to include(@tweet)
-    end
+      it 'should identify tweets with matching terms' do
+        @listener.parse(@tweet)
+        expect(@listener.tweets).to include(@tweet)
+      end
 
-    it 'should return matching keywords that were found in the @tweet' do
-      @listener.analyze(@tweet)
-      expect(
-        ListenerTweet.find_by(
-          listener_id: @listener.id,
-          tweet_id:    @tweet.id
+      it 'should not create new ListenerTweet join table instance' do
+        expect{ @listener.parse(@tweet) }.to change { ListenerTweet.count }.by(1)
+      end
+
+      it 'should identify matching keywords' do
+        @listener.parse(@tweet)
+        expect( ListenerTweet.find_by(
+          tweet_id:     @tweet.id,
+          listener_id:  @listener.id
         ).keyword_slips)
-          .to include('foo')
+          .to include @listener.keywords.first
+      end
+
+      it 'should identify matching hashtags' do
+        @listener.parse(@tweet)
+        expect( ListenerTweet.find_by(
+          tweet_id:     @tweet.id,
+          listener_id:  @listener.id
+        ).hashtag_slips)
+          .to include @listener.key_hashtags.first
+      end
+
+      it 'should identify matching mentions' do
+        @listener.parse(@tweet)
+        expect( ListenerTweet.find_by(
+          tweet_id:     @tweet.id,
+          listener_id:  @listener.id
+        ).mention_slips)
+          .to include @listener.key_mentions.first
+      end
+
+      it 'should identify matching non-case-sensitive keywords' do
+        listener = create(:listener, keywords: ['bar'])
+        listener.parse(@tweet)
+        expect( ListenerTweet.find_by(
+          tweet:        @tweet.id,
+          listener_id:  listener.id
+        ).keyword_slips)
+          .to include (listener.keywords.first)
+
+      end
+
+      it 'should identify hashtags mentions and keywords with keywords_everywhere setting on' do
+        listener = create(:listener, use_keywords_everywhere: true, keywords: ['abc'])
+        listener.parse(@tweet)
+        expect( ListenerTweet.find_by(
+          tweet:        @tweet.id,
+          listener_id:  listener.id
+        ).keyword_slips)
+          .to include (listener.keywords.first)
+
+      end
+
     end
 
-    it 'should create new join table instance when matching keywords are found' do
-      listener = create(:listener, :not_case_sensitive, keywords: ['foo'])
-      expect{ listener.analyze(@tweet) }.to change{ ListenerTweet.count }.by(1)
+    context 'sad path:' do
+
+      before(:each) do
+        @listener = create(
+          :listener,
+          keywords:     ['random'],
+          key_mentions: ['@foo'],
+          key_hashtags: ['#bar']
+        )
+        @tweet    = create(
+          :tweet,
+          body:     ['foo Bar fizz'],
+          mentions: ['@dimanyc'],
+          hashtags: ['#reactjs']
+        )
+      end
+
+      it 'should ignore tweets with no matching terms' do
+        @listener.parse(@tweet)
+        expect(@listener.tweets).to_not include(@tweet)
+      end
+
+      it 'should not create new ListenerTweet join table instance' do
+        @listener.parse(@tweet)
+        expect{ @listener.tweets }.to change { ListenerTweet.count }.by(0)
+      end
+
     end
 
   end
