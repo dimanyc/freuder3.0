@@ -8,11 +8,22 @@ FactoryGirl.define do
         'key_hashtags': Faker::Lorem.words.map { |w| '#' + w }
       }
     }
-    trait :no_keywords do
-      search_terms   { { 'keywords': [] } }
+    trait :empty_search_terms do
+      search_terms   {
+        {
+          'keywords':     [],
+          'key_mentions': [],
+          'key_hashtags': []
+        }
+      }
     end
     trait :not_case_sensitive do
       case_sensitive? { false }
+    end
+    trait :with_slips do
+      after(:create) do |listener|
+        create(:slip, listener_id: listener.id)
+      end
     end
   end
 end

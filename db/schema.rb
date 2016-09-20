@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160917173737) do
+ActiveRecord::Schema.define(version: 20160919031158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,10 +29,21 @@ ActiveRecord::Schema.define(version: 20160917173737) do
   create_table "listeners", force: :cascade do |t|
     t.string   "name"
     t.jsonb    "search_terms", default: {"keywords"=>[], "key_hashtags"=>[], "key_mentions"=>[]}
-    t.jsonb    "options",      default: {"hashtags"=>false, "mentions"=>false, "case_sensitive"=>false, "use_keywords_everywhere"=>false}
-    t.datetime "created_at",                                                                                                               null: false
-    t.datetime "updated_at",                                                                                                               null: false
+    t.jsonb    "options",      default: {"hashtags"=>false, "mentions"=>false, "case_sensitive"=>true, "include_replies"=>true, "use_keywords_everywhere"=>false}
+    t.datetime "created_at",                                                                                                                                       null: false
+    t.datetime "updated_at",                                                                                                                                       null: false
     t.index ["search_terms"], name: "index_listeners_on_search_terms", using: :gin
+  end
+
+  create_table "slips", force: :cascade do |t|
+    t.string   "name"
+    t.jsonb    "slips",       default: {"hashtags"=>[], "keywords"=>[], "mentions"=>[]}
+    t.integer  "listener_id"
+    t.integer  "tweet_id"
+    t.string   "author"
+    t.string   "body"
+    t.datetime "created_at",                                                             null: false
+    t.datetime "updated_at",                                                             null: false
   end
 
   create_table "tweets", force: :cascade do |t|

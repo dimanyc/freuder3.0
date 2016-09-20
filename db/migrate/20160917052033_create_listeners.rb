@@ -11,7 +11,8 @@ class CreateListeners < ActiveRecord::Migration[5.0]
         case_sensitive:           true,
         mentions:                 false,
         hashtags:                 false,
-        use_keywords_everywhere:  false
+        use_keywords_everywhere:  false,
+        include_replies:          true
       }
       t.timestamps
       t.index     :search_terms, using: :gin
