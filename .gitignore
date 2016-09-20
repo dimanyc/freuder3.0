@@ -21,3 +21,6 @@
 
 # SimpleCov
 coverage
+
+# Rubocop
+.rubocop*

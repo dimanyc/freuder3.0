@@ -4,8 +4,8 @@ FactoryGirl.define do
     slips         {
       {
         keywords: Faker::Lorem.words,
-        mentions: Faker::Lorem.words.map { |w| '@'+w },
-        hashtags: Faker::Lorem.words.map { |w| '#'+w }
+        mentions: Faker::Lorem.words.map { |w| '@' + w },
+        hashtags: Faker::Lorem.words.map { |w| '#' + w }
       }
     }
     tweet_id      { rand(1..2) }

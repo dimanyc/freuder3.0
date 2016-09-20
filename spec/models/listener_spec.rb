@@ -6,18 +6,18 @@ RSpec.describe Listener, type: :model do
 
   it { should have_many(:slips).dependent(:destroy) }
 
-  it 'should destory associated .slips on self#destroy' do
+  it 'destroys associated .slips on self#destroy' do
     listener = create(:listener, :with_slips)
-    expect{ listener.destroy }
-      .to change { Slip.count }.by (-1)
+    expect { listener.destroy }
+      .to change { Slip.count }.by(-1)
   end
 
-  it 'should not be stored with empty search terms' do
-    expect{ create(:listener, :empty_search_terms ) }
+  it 'is not stored with empty search terms' do
+    expect { create(:listener, :empty_search_terms) }
       .to raise_error(
-    ActiveRecord::RecordInvalid,
-    'Validation failed: Search terms \'keywords\'' \
-    ' cannot be empty')
+        ActiveRecord::RecordInvalid,
+        'Validation failed: Search terms \'keywords\'' \
+        ' cannot be empty')
   end
 
   context 'parsing' do
@@ -131,22 +131,22 @@ RSpec.describe Listener, type: :model do
         listener.parse(@tweet_with_lowercased_keyword)
       end
 
-      it 'should ignore tweets with mentions matching
-          they listener.keyword when :use_keywords_everywhere
-          setting is off' do
+      it 'should ignore tweets with mentions matching ' \
+         'they listener.keyword when :use_keywords_everywhere ' \
+         'setting is off' do
         listener = create(:listener,
                           keywords: ['@thom'],
                           use_keywords_everywhere: false)
         listener.parse(@bad_tweet)
       end
 
-      it 'should ignore tweets with mentions matching they' \
+      it 'should ignore tweets with hashtags matching they ' \
          'listener.keyword when ' \
          ':use_keywords_everywhere setting is off' do
         listener = create(:listener,
                           keywords: ['#yorke'],
                           use_keywords_everywhere: false)
-        listener.parse(@tweet)
+        listener.parse(@bad_tweet)
       end
 
     end

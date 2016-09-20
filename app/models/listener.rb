@@ -73,7 +73,7 @@ class Listener < ApplicationRecord
 
   def handle_keyword_search_option(tweet)
     if use_keywords_everywhere?
-      tweet.full_text.gsub(/[@#]/,'').split(' ').map(&:strip)
+      tweet.full_text.gsub(/[@#]/, '').split(' ').map(&:strip)
     else
       tweet.full_text.scan(/\w+/)
     end
@@ -81,10 +81,9 @@ class Listener < ApplicationRecord
 
   def valid_search_terms?
     if keywords.empty? &&
-        key_mentions.empty? &&
-        key_hashtags.empty?
+       key_mentions.empty? &&
+       key_hashtags.empty?
       errors.add(:search_terms, '\'keywords\' cannot be empty')
     end
   end
-
 end
