@@ -24,3 +24,6 @@ coverage
 
 # Rubocop
 .rubocop*
+
+# My runner
+run.rb

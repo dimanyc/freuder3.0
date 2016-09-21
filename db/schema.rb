@@ -15,17 +15,6 @@ ActiveRecord::Schema.define(version: 20160919031158) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "listener_tweets", force: :cascade do |t|
-    t.integer  "listener_id"
-    t.integer  "tweet_id"
-    t.jsonb    "slips",       default: {"hashtag_slips"=>[], "keyword_slips"=>[], "mention_slips"=>[]}
-    t.datetime "created_at",                                                                            null: false
-    t.datetime "updated_at",                                                                            null: false
-    t.index ["listener_id", "slips"], name: "index_listener_tweets_on_listener_id_and_slips", using: :btree
-    t.index ["listener_id", "tweet_id"], name: "index_listener_tweets_on_listener_id_and_tweet_id", using: :btree
-    t.index ["slips"], name: "index_listener_tweets_on_slips", using: :gin
-  end
-
   create_table "listeners", force: :cascade do |t|
     t.string   "name"
     t.jsonb    "search_terms", default: {"keywords"=>[], "key_hashtags"=>[], "key_mentions"=>[]}
@@ -39,20 +28,11 @@ ActiveRecord::Schema.define(version: 20160919031158) do
     t.string   "name"
     t.jsonb    "slips",       default: {"hashtags"=>[], "keywords"=>[], "mentions"=>[]}
     t.integer  "listener_id"
-    t.integer  "tweet_id"
+    t.bigint   "tweet_id"
     t.string   "author"
     t.string   "body"
     t.datetime "created_at",                                                             null: false
     t.datetime "updated_at",                                                             null: false
-  end
-
-  create_table "tweets", force: :cascade do |t|
-    t.string   "author"
-    t.string   "body"
-    t.text     "mentions",   default: [],              array: true
-    t.text     "hashtags",   default: [],              array: true
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
   end
 
 end

@@ -34,7 +34,9 @@ class Listener < ApplicationRecord
       include_replies == false
     @tweet = tweet
     @slip = Slip.new(listener_id: id,
-                     tweet_id: @tweet.id)
+                     tweet_id: @tweet.id,
+                     body: @tweet.full_text,
+                     author: @tweet.user.screen_name)
     parse_hashtags if hashtags?
     parse_mentions if mentions?
     parse_keywords unless keywords.empty?

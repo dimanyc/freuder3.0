@@ -8,7 +8,7 @@ class CreateSlips < ActiveRecord::Migration[5.0]
         hashtags: []
       }
       t.integer :listener_id
-      t.integer :tweet_id
+      t.bigint  :tweet_id
       t.string  :author
       t.string  :body
       t.timestamps
