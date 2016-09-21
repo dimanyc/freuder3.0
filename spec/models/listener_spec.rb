@@ -37,6 +37,7 @@ RSpec.describe Listener, type: :model do
       @author = OpenStruct.new(
         screen_name:  'david'
       )
+
       @tweet = OpenStruct.new(
         id:           rand(1...2),
         full_text:    'foo Bar fizz @abc',
