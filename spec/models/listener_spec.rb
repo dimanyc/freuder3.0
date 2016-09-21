@@ -34,12 +34,15 @@ RSpec.describe Listener, type: :model do
         include_replies:  false
       )
 
+      @author = OpenStruct.new(
+        screen_name:  'david'
+      )
       @tweet = OpenStruct.new(
         id:           rand(1...2),
         full_text:    'foo Bar fizz @abc',
         mentions:     ['@dimanyc'],
         hashtags:     ['#reactjs'],
-        author:       '@' + Faker::Internet.user_name,
+        user:         @author
       )
     end
 
@@ -56,7 +59,7 @@ RSpec.describe Listener, type: :model do
       it 'should identify tweets with matching terms' do
         @listener.parse(@tweet)
         expect(@listener.slips.first.body)
-          .to match(@tweet.body)
+          .to match(@tweet.full_text)
       end
 
       it 'should not create new instance of Slip' do
@@ -112,7 +115,7 @@ RSpec.describe Listener, type: :model do
           full_text:    'I hit the bottom and escape',
           mentions:     ['@thom'],
           hashtags:     ['#yorke'],
-          author:       '@' + Faker::Internet.user_name
+          user:         @author
         )
       end
 
