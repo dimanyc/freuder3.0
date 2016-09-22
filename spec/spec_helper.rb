@@ -3,6 +3,8 @@ SimpleCov.start
 
 require 'factory_girl_rails'
 require 'support/database_cleaner'
+require 'support/oauth_magic'
+require 'hash_dot'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

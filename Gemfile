@@ -11,11 +11,10 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 
 gem 'twitter'
+gem 'omniauth-twitter'
 
 gem 'bootstrap', '~> 4.0.0.alpha4'
-source 'https://rails-assets.org' do
-  gem 'rails-assets-tether', '>= 1.1.0'
-end
+gem 'rails-assets-tether', '>= 1.1.0', source: 'https://rails-assets.org'
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -27,6 +26,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rubocop-rspec'
 end
+  gem 'hash_dot'
 
 group :development do
   gem 'web-console'
