@@ -26,7 +26,6 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rubocop-rspec'
 end
-  gem 'hash_dot'
 
 group :development do
   gem 'web-console'

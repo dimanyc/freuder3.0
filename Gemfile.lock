@@ -84,7 +84,6 @@ GEM
     ffi (1.9.14)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    hash_dot (2.0.2)
     hashie (3.4.6)
     hirb (0.7.3)
     http (1.0.4)
@@ -284,7 +283,6 @@ DEPENDENCIES
   dotenv-rails
   factory_girl_rails
   faker
-  hash_dot
   hirb
   jbuilder (~> 2.5)
   jquery-rails
