@@ -4,7 +4,7 @@ OmniAuth.config.test_mode = true
 omniauth_hash = {
   provider:  'twitter',
   uid:       '12345',
-  info: { nickname: 'dimanyc' },
+  info: { nickname: 'habibulin' },
   credentials:
   { token:   '123',
     secret:  '234234'}

@@ -16,21 +16,16 @@ RSpec.describe SessionsController, type: :controller do
     context 'should assign @current_user' do
 
       example 'to a new User record' do
-        request.env['omniauth.auth'].uid = (rand(1...999))
-        request.env['omniauth.auth'].screen_name = Faker::Internet.user_name
         expect {
           post :create
         }.to change { User.count }.by(1)
-
       end
 
       example 'to a corresponding User instance' do
-        request.env['omniauth.auth'].uid = '12345'
-        request.env['omniauth.auth'].screen_name = 'dimanyc'
         create(
           :user,
           uid: '12345',
-          screen_name: 'dimanyc'
+          screen_name: 'habibulin'
         )
         expect {
           post :create
@@ -39,5 +34,4 @@ RSpec.describe SessionsController, type: :controller do
 
     end
   end
-
 end
