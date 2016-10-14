@@ -2,6 +2,7 @@ class TwitterAPI
 
   private
 
+  # :nocov:
   def client
     Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV['API_KEY']
@@ -10,5 +11,6 @@ class TwitterAPI
       config.access_token_secret = ENV['SECRET']
     end
   end
+  # :nocov:
 
 end
