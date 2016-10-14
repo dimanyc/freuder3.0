@@ -16,7 +16,7 @@ gem 'omniauth-twitter'
 gem 'bootstrap', '~> 4.0.0.alpha4'
 gem 'rails-assets-tether', '>= 1.1.0', source: 'https://rails-assets.org'
 
-gem 'react_on_rails'
+gem 'react_on_rails', '~> 6'
 
 group :development, :test do
   gem 'byebug', platform: :mri

@@ -27,3 +27,5 @@ coverage
 
 # My runner
 run.rb
+
+*.log
