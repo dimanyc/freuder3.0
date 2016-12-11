@@ -9,7 +9,7 @@ export default class Tweet extends React.Component {
         entities.media.map((image) => {
           return(
             <div key={image.id}>
-              <img src={image.media_url_https} />
+              <img src={image.media_url_https} className="img-fluid" height={image.sizes.small.h} width={image.sizes.small.w}/>
             </div>
           )
         })
