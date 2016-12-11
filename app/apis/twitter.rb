@@ -1,7 +1,5 @@
 class TwitterAPI
 
-  private
-
   # :nocov:
   def client
     Twitter::REST::Client.new do |config|
