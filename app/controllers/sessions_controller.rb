@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
       user = User.from_omniauth(@api_response)
       assign_access_vars
       session[:user_id] = user.id
+      @current_user = user
       redirect_to dashboard_path
     else
       redirect_to root_path, notice: 'Something went south'
