@@ -17,11 +17,10 @@ class Listener < ApplicationRecord
     :use_keywords_everywhere,
     :include_replies
 
-  keys = [
-    'hashtags',
-    'mentions',
-    'case_sensitive',
-    'use_keywords_everywhere']
+  keys = ['hashtags',
+          'mentions',
+          'case_sensitive',
+          'use_keywords_everywhere']
   keys.each do |key|
     define_method("#{key}?") do
       send(key) == true
@@ -30,7 +29,7 @@ class Listener < ApplicationRecord
 
   def parse(tweet)
     return if
-      tweet.in_reply_to_screen_name.present? &&
+    tweet.in_reply_to_screen_name.present? &&
       include_replies == false
     @tweet = tweet
     @slip = Slip.new(listener_id: id,
@@ -83,9 +82,10 @@ class Listener < ApplicationRecord
 
   def valid_search_terms?
     if keywords.empty? &&
-       key_mentions.empty? &&
-       key_hashtags.empty?
+        key_mentions.empty? &&
+        key_hashtags.empty?
       errors.add(:search_terms, '\'keywords\' cannot be empty')
     end
   end
+
 end
