@@ -13,6 +13,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'twitter'
 gem 'omniauth-twitter'
 
+gem 'sidekiq'
+
 gem 'bootstrap', '~> 4.0.0.alpha4'
 gem 'rails-assets-tether', '>= 1.1.0', source: 'https://rails-assets.org'
 

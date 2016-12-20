@@ -2,7 +2,7 @@
 class TwitterFeedChannel < ApplicationCable::Channel
 
   def subscribed
-    stream_from "twitter_feed"
+    stream_from 'twitter_feed'
   end
 
 end

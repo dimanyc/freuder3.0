@@ -3,6 +3,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     create_table :users do |t|
       t.string :uid
       t.string :screen_name
+      t.string :token
+      t.string :secret
 
       t.timestamps
     end

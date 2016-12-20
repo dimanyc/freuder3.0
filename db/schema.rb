@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(version: 20160922002553) do
   create_table "users", force: :cascade do |t|
     t.string   "uid"
     t.string   "screen_name"
+    t.string   "token"
+    t.string   "secret"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

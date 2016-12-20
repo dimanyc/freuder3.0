@@ -3,9 +3,8 @@ class SessionsController < ApplicationController
   def create
     if @api_response = request.env['omniauth.auth']
       user = User.from_omniauth(@api_response)
+      cookies.signed[:user_id] = user.id
       assign_access_vars
-      session[:user_id] = user.id
-      @current_user = user
       redirect_to dashboard_path
     else
       redirect_to root_path, notice: 'Something went south'
@@ -15,8 +14,8 @@ class SessionsController < ApplicationController
   private
 
   def assign_access_vars
-    ENV['TOKEN']  = @api_response.credentials.token
-    ENV['SECRET'] = @api_response.credentials.secret
+    ENV['TOKEN']  ||= @api_response.credentials.token
+    ENV['SECRET'] ||= @api_response.credentials.secret
   end
 
 end
