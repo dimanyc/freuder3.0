@@ -11,8 +11,7 @@ class DashboardController < ApplicationController
   private
 
   def establish_api_connection
-    @rest = TwitterAPI.new(current_user.token,
-                           current_user.secret).client
+    @rest = TwitterAPI.new.client
   end
 
   def start_stream
