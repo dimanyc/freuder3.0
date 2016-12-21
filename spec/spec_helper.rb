@@ -16,3 +16,12 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
 end
+
+def stub_twitter_api
+  client = double(Twitter::REST::Client, home_timeline: :true)
+  stream = double(Twitter::Streaming::Client, user: true)
+  api = double(TwitterAPI, client: client, stream: stream)
+  allow(TwitterAPI)
+    .to receive(:new)
+    .and_return(api)
+end

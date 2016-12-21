@@ -1,9 +1,11 @@
 class User < ApplicationRecord
 
-  validates_presence_of :screen_name, :uid
+  validates_presence_of [:screen_name,
+                         :uid,
+                         :token,
+                         :secret]
 
   def self.from_omniauth(response)
-    puts "=====#{response}"
     @uid         = response.uid
     @screen_name = response.info.nickname
     @token       = response.credentials.token

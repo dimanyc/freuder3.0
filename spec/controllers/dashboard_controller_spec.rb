@@ -5,6 +5,7 @@ RSpec.describe DashboardController, type: :controller do
   context '#show' do
 
     before do
+      stub_twitter_api
       get :show
     end
 
@@ -15,3 +16,4 @@ RSpec.describe DashboardController, type: :controller do
   end
 
 end
+
