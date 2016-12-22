@@ -6,6 +6,9 @@ require 'rspec/rails'
 require 'support/shoulda_matchers'
 require 'capybara/rspec'
 require 'capybara/rails'
+require 'capybara/poltergeist'
+
+Capybara.javascript_driver = :poltergeist
 
 ActiveRecord::Migration.maintain_test_schema!
 

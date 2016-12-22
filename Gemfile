@@ -31,6 +31,7 @@ group :development, :test do
   gem 'rubocop-rspec'
   gem 'mutant-rspec'
   gem 'parallel_tests'
+  gem 'poltergeist'
 end
 
 group :development do
