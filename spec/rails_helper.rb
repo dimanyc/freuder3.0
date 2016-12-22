@@ -7,6 +7,8 @@ require 'support/shoulda_matchers'
 require 'capybara/rspec'
 require 'capybara/rails'
 require 'capybara/poltergeist'
+require 'support/sidekiq'
+
 
 Capybara.javascript_driver = :poltergeist
 

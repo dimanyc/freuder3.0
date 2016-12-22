@@ -4,8 +4,8 @@ module TwitterAPIHelpers
     client = double(Twitter::REST::Client, home_timeline: :true)
     stream = double(Twitter::Streaming::Client, user: true)
     api    = double(TwitterAPI, client: client, stream: stream)
-    tweets = 3.times { OpenStruct.new(text: Faker::Lorem.word,
-                                      author: Faker::Lorem.word) }
+    tweets = ['wewrwer','1']#3.times { OpenStruct.new(text: Faker::Lorem.word,
+                                      # author: Faker::Lorem.word) }
 
     allow(TwitterAPI)
       .to receive(:new)

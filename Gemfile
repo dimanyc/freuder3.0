@@ -47,6 +47,7 @@ group :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'whiny_validation'
   gem 'simplecov', require: false
+  gem 'rspec-sidekiq'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
