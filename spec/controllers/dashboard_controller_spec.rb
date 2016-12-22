@@ -6,6 +6,8 @@ RSpec.describe DashboardController, type: :controller do
 
     before do
       stub_twitter_api
+      user = create(:user)
+      sign_in(user)
       get :show
     end
 

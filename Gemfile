@@ -30,6 +30,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rubocop-rspec'
   gem 'mutant-rspec'
+  gem 'parallel_tests'
 end
 
 group :development do

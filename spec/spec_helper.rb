@@ -25,3 +25,7 @@ def stub_twitter_api
     .to receive(:new)
     .and_return(api)
 end
+
+def sign_in(user)
+  session[:user_id] = user.id
+end

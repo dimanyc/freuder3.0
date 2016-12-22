@@ -1,10 +1,12 @@
 class DashboardController < ApplicationController
 
   before_action :establish_api_connection, only: :show
+  before_action :auth_user
 
   def show
-    @dashboard_props = { name:   current_user.screen_name,
-                         tweets: @rest.home_timeline }
+    @dashboard_props = {
+      name:   current_user.screen_name,
+      tweets: @rest.home_timeline }
     start_stream
   end
 
