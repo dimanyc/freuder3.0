@@ -54,9 +54,26 @@ RSpec.describe SessionsController, type: :controller do
             .to(a_kind_of(String))
       end
 
-      it 'assigns session token and secret instance vars' do
-        expect(ENV).to receive(:[]).with(a_kind_of(String)).twice
-        post :create
+      it 'assigns session token to environment variable' do
+        ENV['TOKEN'] = nil
+        expect {
+          post :create
+        }.to change {
+          ENV['TOKEN'] }
+            .from(nil)
+            .to(a_kind_of(String))
+
+      end
+
+      it 'assigns secret token to environment variable' do
+        ENV['SECRET'] = nil
+        expect {
+          post :create
+        }.to change {
+          ENV['SECRET'] }
+            .from(nil)
+            .to(a_kind_of(String))
+
       end
 
       it 'redirects to dashboard' do

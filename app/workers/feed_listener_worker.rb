@@ -1,10 +1,12 @@
 class FeedListenerWorker
+
   include Sidekiq::Worker
 
   def perform(user_id)
-    user   = User.find(user_id)
-    stream = TwitterAPI.new(user.token,
-                            user.secret).stream
+    puts "=====#{user_id}"
+    puts "=====#{ENV['TOKEN']}"
+    puts "=====#{ENV['SECRET']}"
+    stream = TwitterAPI.new.stream
     stream.user do |object|
       case object
       when Twitter::Tweet
@@ -14,4 +16,5 @@ class FeedListenerWorker
       end
     end
   end
+
 end

@@ -15,8 +15,8 @@ class SessionsController < ApplicationController
   private
 
   def assign_access_vars
-    ENV['TOKEN']  ||= @api_response.credentials.token
-    ENV['SECRET'] ||= @api_response.credentials.secret
+    ENV['TOKEN']  = @api_response.credentials.token
+    ENV['SECRET'] = @api_response.credentials.secret
   end
 
 end
