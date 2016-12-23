@@ -18,7 +18,9 @@ class DashboardController < ApplicationController
 
   def start_stream
     user_id = current_user.id
-    FeedListenerWorker.perform_async(user_id)
+    FeedListenerWorker.perform_async(user_id,
+                                     ENV['TOKEN'],
+                                     ENV['SECRET'])
   end
 
 end

@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
     if @api_response = request.env['omniauth.auth']
       user = User.from_omniauth(@api_response)
       session[:user_id] = user.id
-      cookies.encrypted[:user_id] = user.id
+      cookies[:user_id] = user.id
       assign_access_vars
       redirect_to dashboard_path
     else
