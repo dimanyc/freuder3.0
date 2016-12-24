@@ -32,6 +32,7 @@ group :development, :test do
   gem 'mutant-rspec'
   gem 'parallel_tests'
   gem 'poltergeist'
+  gem 'selenium-webdriver'
 end
 
 group :development do

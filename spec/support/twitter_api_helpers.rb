@@ -1,17 +1,17 @@
 module TwitterAPIHelpers
 
   def stub_twitter_api
-    client = double(Twitter::REST::Client, home_timeline: :true)
-    stream = double(Twitter::Streaming::Client, user: true)
-    api    = double(TwitterAPI, client: client, stream: stream)
-    tweets = ['wewrwer','1']
-
-    allow(TwitterAPI)
-      .to receive(:new)
-      .and_return(api)
-    allow(client)
-      .to receive(:home_timeline)
+    api = instance_double(TwitterAPI)
+    tweets = [{ text:     Faker::Lorem.paragraph,
+                id_str:   rand(1..3).to_s,
+                user:     Faker::Internet.user_name,
+                entities: Array.new }]
+    allow(api)
+      .to receive(:get_home_timeline)
       .and_return(tweets)
+    allow(api)
+      .to receive(:start_streaming)
+    allow(TwitterAPI).to receive(:new) { api }
   end
 
 end

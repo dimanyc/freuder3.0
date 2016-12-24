@@ -51,7 +51,7 @@ RSpec.describe SessionsController, type: :controller do
         }.to change {
           cookies[:user_id] }
             .from(nil)
-            .to(a_kind_of(String))
+            .to(a_kind_of(Fixnum))
       end
 
       it 'assigns session token to environment variable' do

@@ -10,11 +10,18 @@ RSpec.describe DashboardController, type: :controller do
         stub_twitter_api
         user = create(:user)
         sign_in(user)
-        get :show
       end
 
       it 'returns 200 response status' do
+        get :show
         expect(response.status).to eq(200)
+      end
+
+      it 'inits FeedListenerWorker' do
+        expect {
+          get :show
+        }.to change(FeedListenerWorker.jobs, :size)
+          .by(1)
       end
 
     end

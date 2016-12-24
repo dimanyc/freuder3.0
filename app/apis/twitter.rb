@@ -1,25 +1,43 @@
 class TwitterAPI
 
-  # :nocov:
+  def initialize(token, secret)
+    @token  = token
+    @secret = secret
+  end
+
+  def start_streaming
+    stream.user do |object|
+      case object
+      when Twitter::Tweet
+        ActionCable.server.broadcast(
+          'twitter_feed',
+          text: object.text)
+      end
+    end
+  end
+
+  def get_home_timeline
+    client.home_timeline
+  end
+
+  private
+
   def client
     Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV['API_KEY']
       config.consumer_secret     = ENV['API_SECRET']
-      config.access_token        = ENV['TOKEN']
-      config.access_token_secret = ENV['SECRET']
+      config.access_token        = @token
+      config.access_token_secret = @secret
     end
   end
 
-  # token and secret are passed as args
-  # because the streaming is inited in a fork
-  def stream(token, secret)
+  def stream
     Twitter::Streaming::Client.new do |config|
       config.consumer_key        = ENV['API_KEY']
       config.consumer_secret     = ENV['API_SECRET']
-      config.access_token        = token
-      config.access_token_secret = secret
+      config.access_token        = @token
+      config.access_token_secret = @secret
     end
   end
-  # :nocov:
 
 end
